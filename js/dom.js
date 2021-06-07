@@ -42,6 +42,8 @@ function makeBookElement(title, author, year, haveRead) {
   }else{
     buttonContainer.append(HasReadBook(), DeleteBook())
   }
+
+  console.log(haveRead)
   
   const articleElement = document.createElement('article');
   articleElement.classList.add("book_item");
@@ -66,19 +68,47 @@ function createButton(buttonColor, buttonText, eventListener) {
 }
 
 function HasReadBook() {
-  return createButton("green", "Telah dibaca", function(){
-    alert('buku telah dibaca')
-  })
-}
-
-function DeleteBook() {
-  return createButton("red", "Hapus buku", function(){
-    alert('buku telah dihapus')
+  return createButton("green", "Telah dibaca", function(event){
+    const btnContainer = event.target.parentElement;
+    moveBook(btnContainer.parentElement, "do");
   })
 }
 
 function UndoReadBook() {
-  return createButton("green", "Baca kembali", function(){
-    alert('buku dibaca kembali')
+  return createButton("green", "Baca kembali", function(event){
+    const btnContainer = event.target.parentElement;
+    moveBook(btnContainer.parentElement);
   })
+}
+
+function DeleteBook() {
+  return createButton("red", "Hapus buku", function(event){
+    const wrapper = event.target.parentElement
+    const itemList = wrapper.parentElement
+    itemList.remove();
+  })
+}
+
+// Memindahkan buku
+function moveBook(itemElement, condition = "undo"){
+  const title = itemElement.querySelector("h3").innerText;
+  const author = itemElement.querySelectorAll("p")[0].innerText;
+  const year = itemElement.querySelectorAll("p")[1].innerText;
+
+  console.log(author)
+  console.log(year)
+
+  let container, newBook
+
+  if(condition === "undo"){
+    container = document.getElementById(HAS_NOT_READ)
+    newBook = makeBookElement(title, author, year, false)
+    container.append(newBook)
+  }else{
+    container = document.getElementById(HAS_READ)
+    newBook = makeBookElement(title, author, year, true)
+    container.append(newBook)
+  }
+
+  itemElement.remove()
 }
