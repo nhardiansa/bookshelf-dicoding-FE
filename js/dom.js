@@ -1,5 +1,6 @@
 const HAS_NOT_READ = 'incompleteBookshelfList'
 const HAS_READ = 'completeBookshelfList'
+const BOOK_ID = "itemId"
 
 // Menambah buku baru
 function addNewBook() {
@@ -17,8 +18,14 @@ function addNewBook() {
   }
 
   const newBook = makeBookElement(bookTitle, bookAuthor, bookYear, bookHaveRead);
+  const bookObject = composeBookObject(bookTitle, bookAuthor, bookYear, bookHaveRead);
+
+  newBook[BOOK_ID] = bookObject.id;
+  // console.log(newBook)
+  bookTemp.push(bookObject);
   
   container.append(newBook);
+  updateDataToStorage();
 }
 
 // Pembuatan item Buku
@@ -43,8 +50,6 @@ function makeBookElement(title, author, year, haveRead) {
     buttonContainer.append(HasReadBook(), DeleteBook())
   }
 
-  console.log(haveRead)
-  
   const articleElement = document.createElement('article');
   articleElement.classList.add("book_item");
 
@@ -91,22 +96,24 @@ function DeleteBook() {
 
 // Memindahkan buku
 function moveBook(itemElement, condition = "undo"){
-  const title = itemElement.querySelector("h3").innerText;
-  const author = itemElement.querySelectorAll("p")[0].innerText;
-  const year = itemElement.querySelectorAll("p")[1].innerText;
+  const bookId = itemElement[BOOK_ID]
+  const book = getBook(bookId);
 
-  console.log(author)
-  console.log(year)
+  const title = book.title;
+  const author = book.author;
+  const year = book.year;
 
   let container, newBook
 
   if(condition === "undo"){
     container = document.getElementById(HAS_NOT_READ)
     newBook = makeBookElement(title, author, year, false)
+    newBook[BOOK_ID] = bookId
     container.append(newBook)
   }else{
     container = document.getElementById(HAS_READ)
     newBook = makeBookElement(title, author, year, true)
+    newBook[BOOK_ID] = bookId
     container.append(newBook)
   }
 
