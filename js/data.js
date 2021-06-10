@@ -45,12 +45,7 @@ function composeBookObject(title, author, year, isComplete) {
 }
 
 function getBook(bookId) {
-  for(book of bookTemp) {
-    if(book.id === bookId) {
-      return book;
-    }
-    return null;
-  }
+  return bookTemp.filter(book => book.id === bookId)
 }
 
 function getBookIndex(bookId) {

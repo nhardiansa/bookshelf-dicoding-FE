@@ -97,7 +97,8 @@ function DeleteBook() {
 // Memindahkan buku
 function moveBook(itemElement, condition = "undo"){
   const bookId = itemElement[BOOK_ID]
-  const book = getBook(bookId);
+  const book = getBook(bookId)[0];
+  console.log(book)
 
   const title = book.title;
   const author = book.author;
@@ -108,14 +109,17 @@ function moveBook(itemElement, condition = "undo"){
   if(condition === "undo"){
     container = document.getElementById(HAS_NOT_READ)
     newBook = makeBookElement(title, author, year, false)
+    book.isComplete = false
     newBook[BOOK_ID] = bookId
     container.append(newBook)
   }else{
     container = document.getElementById(HAS_READ)
     newBook = makeBookElement(title, author, year, true)
+    book.isComplete = true
     newBook[BOOK_ID] = bookId
     container.append(newBook)
   }
 
   itemElement.remove()
+  updateDataToStorage()
 }
