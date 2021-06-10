@@ -49,12 +49,5 @@ function getBook(bookId) {
 }
 
 function getBookIndex(bookId) {
-  let index = 0
-  for (book of bookTemp) {
-    if (book.id === bookId) {
-      return index
-    }
-    index++
-  }
-  return -1;
+  return bookTemp.findIndex((book) => book.id === bookId)
 }

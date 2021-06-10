@@ -90,7 +90,12 @@ function DeleteBook() {
   return createButton("red", "Hapus buku", function(event){
     const wrapper = event.target.parentElement
     const itemList = wrapper.parentElement
+    
+    const indexBook = getBookIndex(itemList[BOOK_ID])
+    bookTemp.splice(indexBook, 1)
+
     itemList.remove();
+    updateDataToStorage()
   })
 }
 
@@ -98,7 +103,6 @@ function DeleteBook() {
 function moveBook(itemElement, condition = "undo"){
   const bookId = itemElement[BOOK_ID]
   const book = getBook(bookId)[0];
-  console.log(book)
 
   const title = book.title;
   const author = book.author;
