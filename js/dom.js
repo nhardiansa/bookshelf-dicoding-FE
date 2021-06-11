@@ -94,6 +94,8 @@ function DeleteBook() {
     const indexBook = getBookIndex(itemList[BOOK_ID])
     bookTemp.splice(indexBook, 1)
 
+    console.log(itemList)
+
     itemList.remove();
     updateDataToStorage()
   })
@@ -126,4 +128,45 @@ function moveBook(itemElement, condition = "undo"){
 
   itemElement.remove()
   updateDataToStorage()
+}
+
+function refreshBookFromTemp() {
+  const uncompleteRead = document.getElementById(HAS_NOT_READ)
+  const completeRead = document.getElementById(HAS_READ)
+
+  for(book of bookTemp) {
+    const newBook = makeBookElement(book.title, book.author, book.year, book.isComplete)
+    newBook[BOOK_ID] = book.id;
+
+    if(book.isComplete) {
+      completeRead.append(newBook)
+    } else {
+      uncompleteRead.append(newBook)
+    }
+  }
+}
+
+function searchBook() {
+  const uncompleteRead = document.getElementById(HAS_NOT_READ)
+  const completeRead = document.getElementById(HAS_READ)
+
+  const allBook = document.querySelectorAll('.book_item')
+  allBook.forEach((e) => e.remove())
+
+  const userInput = document.getElementById('searchBookTitle').value
+
+  for(book of bookTemp) {  
+    let title = book.title
+    
+    const newBook = makeBookElement(book.title, book.author, book.year, book.isComplete)
+    newBook[BOOK_ID] = book.id;
+
+    if(title.includes(userInput)){
+      if(book.isComplete) {
+        completeRead.append(newBook)
+      } else {
+        uncompleteRead.append(newBook)
+      }
+    }
+  }
 }

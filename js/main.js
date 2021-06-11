@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', function () {
   
   formSearch.addEventListener('submit', function (event) {
     event.preventDefault();
+    searchBook()
   })
+
+  if(isStorageExist) {
+    loadBookFromStorage()
+  }
   
+});
+
+document.addEventListener("ondatasaved", () => {
+  console.log("Data berhasil disimpan.");
+});
+
+document.addEventListener("ondataloaded", () => {
+  refreshBookFromTemp();
 });
